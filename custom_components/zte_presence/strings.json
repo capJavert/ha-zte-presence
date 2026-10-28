@@ -1,0 +1,52 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "ZTE access points",
+        "description": "Addresses of the router and any mesh units, e.g. `http://192.168.1.1`. Logins are read from the Home Assistant container environment: `ZTE_USERNAME` and `ZTE_PASSWORD` for all units, or `ZTE_USERNAME_<host>` and `ZTE_PASSWORD_<host>` for one unit (e.g. `ZTE_PASSWORD_192_168_1_2`).",
+        "data": { "urls": "Access point addresses" }
+      },
+      "reconfigure": {
+        "title": "ZTE access points",
+        "description": "Addresses of the router and any mesh units. Tracked devices stay as they are.",
+        "data": { "urls": "Access point addresses" }
+      },
+      "devices": {
+        "title": "Devices to track",
+        "description": "Each selected device is home while it is connected to the Wi-Fi of any of the access points.",
+        "data": {
+          "devices": "Devices",
+          "consider_home": "Away after missing for"
+        }
+      }
+    },
+    "error": {
+      "no_urls": "Enter at least one access point address.",
+      "invalid_url": "Addresses must look like `http://192.168.1.1` (http or https, no login in the address).",
+      "missing_env": "No login is set in the Home Assistant container for one of the access points.",
+      "invalid_auth": "An access point rejected the login (or is locked after failed logins).",
+      "cannot_connect": "Could not reach an access point or read its Wi-Fi client list."
+    },
+    "abort": {
+      "already_configured": "ZTE Wi-Fi presence is already set up; change it under Configure.",
+      "single_instance_allowed": "ZTE Wi-Fi presence is already set up; change it under Configure.",
+      "reconfigure_successful": "Access points updated."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Devices to track",
+        "data": {
+          "devices": "Devices",
+          "consider_home": "Away after missing for"
+        }
+      }
+    },
+    "error": {
+      "missing_env": "No login is set in the Home Assistant container for one of the access points.",
+      "invalid_auth": "An access point rejected the login (or is locked after failed logins); its devices may be missing from the list.",
+      "cannot_connect": "Could not reach an access point; its devices may be missing from the list."
+    }
+  }
+}

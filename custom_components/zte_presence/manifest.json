@@ -1,0 +1,15 @@
+{
+  "domain": "zte_presence",
+  "name": "ZTE Wi-Fi presence",
+  "codeowners": [
+    "@capJavert"
+  ],
+  "config_flow": true,
+  "documentation": "https://github.com/capJavert/ha-zte-presence",
+  "integration_type": "hub",
+  "iot_class": "local_polling",
+  "issue_tracker": "https://github.com/capJavert/ha-zte-presence/issues",
+  "requirements": [],
+  "single_config_entry": true,
+  "version": "0.2.0"
+}

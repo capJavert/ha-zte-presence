@@ -1,0 +1,5 @@
+{
+  "name": "ZTE Wi-Fi presence",
+  "homeassistant": "2025.3.0",
+  "render_readme": true
+}
