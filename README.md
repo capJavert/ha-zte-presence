@@ -68,3 +68,6 @@ prints the Wi-Fi clients (name, MAC, IP). Without an argument it uses `ZTE_HOST`
 ## License
 
 MIT
+
+Not affiliated with or endorsed by ZTE. ZTE and the ZTE logo are trademarks of ZTE
+Corporation; the logo is used only to show which devices this integration works with.
