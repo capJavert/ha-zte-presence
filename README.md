@@ -1,12 +1,11 @@
 # ZTE Wi-Fi presence
 
 Home Assistant custom integration: a device is **home** while it is connected to the Wi-Fi of
-a ZTE router or mesh unit (tested: F8648P router, H3601P mesh). No third-party code,
-standard library only.
+a ZTE router or mesh unit. No third-party code, standard library only.
 
 Every 30 s it logs into each access point's web interface, reads its Wi-Fi client list and
-logs out (F8648P: `wlan_client_stat_lua.lua`, H3601P: `accessdev_ssiddev_lua.lua`; both
-are tried). All access points feed one tracker per device; its `access_point` attribute
+logs out (routers and mesh units name that page differently; the known names are
+tried in turn). All access points feed one tracker per device; its `access_point` attribute
 shows which unit the device is on.
 
 Only Wi-Fi associations count. A unit drops a departed phone from its Wi-Fi list within
