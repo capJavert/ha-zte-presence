@@ -12,7 +12,16 @@ from homeassistant.exceptions import ConfigEntryError
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .client import NetworkClient, ZteAuthError, ZteClient, ZteError
-from .const import CONF_DEVICES, CONF_URLS, DOMAIN, ENV_PASSWORD, ENV_USERNAME, SCAN_INTERVAL, credentials_from_env
+from .const import (
+    CONF_DEVICES,
+    CONF_URLS,
+    DOMAIN,
+    ENV_PASSWORD,
+    ENV_USERNAME,
+    SCAN_INTERVAL,
+    CredentialsError,
+    credentials_from_env,
+)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -31,9 +40,12 @@ class ZteCoordinator(DataUpdateCoordinator[dict[str, NetworkClient]]):
         # The container environment cannot change while HA runs, so read it once
         self._credentials: dict[str, tuple[str, str]] = {}
         for url in entry.data[CONF_URLS]:
-            credentials = credentials_from_env(url)
+            try:
+                credentials = credentials_from_env(url)
+            except CredentialsError as err:
+                raise ConfigEntryError(str(err)) from err
             if credentials is None:
-                raise ConfigEntryError(f"Set {ENV_USERNAME} and {ENV_PASSWORD} in the Home Assistant container")
+                raise ConfigEntryError(f"Set {ENV_USERNAME} and {ENV_PASSWORD} in the Home Assistant container (no login for {url})")
             self._credentials[url] = credentials
         self._tracked: set[str] = set(entry.options.get(CONF_DEVICES, {}))
         # Monotonic times per unit; ages are measured against that unit's last successful

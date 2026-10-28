@@ -22,17 +22,24 @@ unit does not lock the account; a temporary lock is waited out.
 
 ## Credentials
 
-Read from the Home Assistant container environment, never stored in HA. One pair for all
-units, and optionally a pair per unit named after its host, which takes precedence:
+The integration expects the login in the `ZTE_USERNAME` and `ZTE_PASSWORD` environment
+variables of the Home Assistant container; it is never stored in Home Assistant. Docker
+Compose example:
 
 ```yaml
 services:
   homeassistant:
     environment:
       ZTE_USERNAME: user
-      ZTE_PASSWORD: "..."
-      ZTE_USERNAME_192_168_1_2: user
-      ZTE_PASSWORD_192_168_1_2: "..."
+      ZTE_PASSWORD: "password"
+```
+
+**Advanced:** if a unit has its own login, add it to `ZTE_CREDENTIALS`, a JSON object keyed
+by the unit's address. An entry there is used for that unit instead of `ZTE_USERNAME` /
+`ZTE_PASSWORD`:
+
+```yaml
+      ZTE_CREDENTIALS: '{"192.168.1.2": {"username": "user", "password": "mesh-password"}}'
 ```
 
 Use the limited `user` account. These units often allow one web session at a time, so a
@@ -48,24 +55,16 @@ certificates. The password is never sent as is, only hashed with a one-time logi
      type **Integration**; then download **ZTE Wi-Fi presence**.
    - **Manually**: copy `custom_components/zte_presence` into the HA config folder
      (`<config>/custom_components/zte_presence`).
-2. Add the environment variables, then recreate the container
-   (`docker compose up -d homeassistant`).
+2. Set the environment variables, then recreate the container (`docker compose up -d homeassistant`).
 3. Settings → Devices & services → Add integration → **ZTE Wi-Fi presence**.
 4. Enter the router and mesh unit addresses, then pick the phones to track. Change the
    phones later under the integration's **Configure**, the addresses under **Reconfigure**.
 
-## Test from a Mac
+## Development
 
-```
-security add-generic-password -s zte-router -a <username> -w
-python3 tools/probe.py http://192.168.1.1
-```
-
-Set `ZTE_KEYCHAIN_SERVICE` to use a keychain item with another name.
-
-Prints the Wi-Fi clients (name, MAC, IP); the password is never printed.
-
-Parser tests: `python3 -m unittest discover tests`
+`python3 tools/probe.py 192.168.1.1` logs in once with the same environment variables and
+prints the Wi-Fi clients (name, MAC, IP). Without an argument it uses `ZTE_HOST`, else
+`192.168.1.1`. Parser tests: `python3 -m unittest discover tests`.
 
 ## License
 

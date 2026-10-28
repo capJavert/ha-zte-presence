@@ -29,6 +29,7 @@ from .const import (
     DEFAULT_CONSIDER_HOME,
     DEFAULT_URLS,
     DOMAIN,
+    CredentialsError,
     credentials_from_env,
 )
 
@@ -37,7 +38,10 @@ async def _probe(hass: HomeAssistant, urls: list[str]) -> tuple[dict[str, str], 
     """Log in to each access point once and return (errors, connected clients of all that answered)."""
     clients: dict[str, NetworkClient] = {}
     for url in urls:
-        credentials = credentials_from_env(url)
+        try:
+            credentials = credentials_from_env(url)
+        except CredentialsError:
+            return {"base": "invalid_env"}, {}
         if credentials is None:
             return {"base": "missing_env"}, {}
         try:
